@@ -10,7 +10,7 @@ Function to scan DynamoDB table and upload the data to an S3 bucket.
 '''
 dynamodb = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
-table = dynamodb.Table('ttm')
+table = dynamodb.Table('<TABLE>')
 def lambda_handler(event, context):
     
     #Helper function to convert decimals in the response to floats.
@@ -24,5 +24,5 @@ def lambda_handler(event, context):
     
     response = table.scan()
     body = json.dumps(response['Items'], default=handle_decimal_type)
-    response = s3.put_object(Bucket='ttm-quicksightfiles',
-    Key = 'quicksightfile.json', Body=body, ContentType='application/json')
+    response = s3.put_object(Bucket='<BUCKET>',
+    Key = '<KEYNAME>', Body=body, ContentType='application/json')

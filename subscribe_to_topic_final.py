@@ -11,6 +11,10 @@ import json
 import pygame
 from ttmpolly import Polly
 
+'''
+Script to subscribe Raspberry Pi to topic linked with IoT-Button and handle different messages accordingly.
+'''
+
 def customCallback(client, userdata, message):
 
     if json.loads(message.payload)=={'foo': 'epicfail'}:
@@ -35,7 +39,7 @@ def customCallback(client, userdata, message):
         message=json.loads(message.payload)
         tts = Polly('Matthew')
         prosentti="percent"
-        list=[]
+        list=[] #create a list for different emotions and append right values and words correctly for Polly to synthesize
         for key in message:
             list.append(message[key]),
             list.append(prosentti),
@@ -48,16 +52,15 @@ def customCallback(client, userdata, message):
         print(sentence)
         return True
 
-#motor_runner.pulse(2)
-#myMQTTClient.publish('home/motorRunStatus', packet.payload, 0)
-host = "a54aqrzf2bcr5-ats.iot.us-east-1.amazonaws.com"
-port = 8883
-rootCAPath = "/home/pi/ttm/ttm-ca.pem"
-certificatePath = "/home/pi/ttm/ttm-certificate.pem.crt"
-privateKeyPath = "/home/pi/ttm/ttm-private.pem.key"
-clientId = "ttm_tilaaja_pi"
-topic = "ttmTestiTopic/iot"
-payload="jou"
+
+host = #HOST
+port = #PORT
+rootCAPath = #CA PATH
+certificatePath = #CERTIFICATE PATH
+privateKeyPath = #KEY PATH
+clientId = #CLIENT ID
+topic = #TOPIC
+payload= #PAYLOAD NAME
 
 logger = logging.getLogger("AWSIoTPythonSDK.core")
 logger.setLevel(logging.INFO)
@@ -77,8 +80,4 @@ myAWSIoTMQTTClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myAWSIoTMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 myAWSIoTMQTTClient.connect()
 myAWSIoTMQTTClient.subscribe(topic, 1, customCallback)
-#time.sleep(2)
-#myAWSIoTMQTTClient.publish(topic, payload, 0)
-#time.sleep(1)
-#myAWSIoTMQTTClient.publish(topic, payload, 0)
 pause()

@@ -23,7 +23,7 @@ def lambda_handler(event, context):
     response = client.detect_faces(Image={'S3Object':{'Bucket':bucket,'Name':fileName}},Attributes=['ALL'])
     #Going through the response from Rekognition and creating feelingsdict for DynamoDB and pollydict for user feedback.
     if response['FaceDetails'] != []:
-        for label in response['FaceDetails'][0]["Emotions"]:
+        for label in response['FaceDetails'][0]['Emotions']:
             feelingsdict[label['Type']] = str(label['Confidence'])
             smile = response['FaceDetails'][0]['Smile']['Value'] #getting smile boolean
     
@@ -31,20 +31,20 @@ def lambda_handler(event, context):
             if (item['Confidence']) >= 2:
                 pollydict[item['Type'].lower()] = str(round(item['Confidence']))       
         #Publishing user feedback to MQTT topic.
-        client = boto3.client('iot-data', region_name='us-east-1')
+        client = boto3.client('iot-data', region_name='<REGION>')
         pay=json.dumps(pollydict)
         resp = client.publish(
-            topic='ttmTestiTopic/iot',
+            topic='<TOPIC>',
             qos=1,
             payload=pay
         )
         
     else:
         print('No face detected.')
-        client = boto3.client('iot-data', region_name='us-east-1')
+        client = boto3.client('iot-data', region_name='<REGION>')
         pay=json.dumps({"foo": "epicfail"})
         resp = client.publish(
-            topic='ttmTestiTopic/iot',
+            topic='<TOPIC>',
             qos=1,
             payload=pay
         )
@@ -52,7 +52,7 @@ def lambda_handler(event, context):
     #Uploading the data to DynamoDB.
     if response['FaceDetails'] != []:
         dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-        table = dynamodb.Table('ttm')
+        table = dynamodb.Table('<TABLE>')
         response = table.put_item(
             Item={
                 'id': str(uniqueid),

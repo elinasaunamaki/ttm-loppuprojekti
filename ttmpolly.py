@@ -5,7 +5,6 @@ import time
 import io 
 '''
 Code for using Amazon Polly for text-to-speech
-
 '''
 
 class Polly():

@@ -4,7 +4,7 @@ import time
 import os
 import logging
 from botocore.exceptions import ClientError
-#from ttmpolly import Polly
+
 def capturephoto():
     camera = PiCamera()
     image_path = '/home/pi/ttm/image_%s.jpg' % int(round(time.time() * 1000))
@@ -27,7 +27,4 @@ def capturephoto():
 
 
        return True
-    upload_to_aws(image, 'ttm-photos')
-    #tts = Polly('Amy')
-    #time.sleep(10)
-    #tts.say('Analyzing photo. Please wait.')
+    upload_to_aws(image, '<BUCKET>')
